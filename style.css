@@ -78,22 +78,27 @@ body {
     height: 16px;
 }
 
-/* MAP CONTAINER */
+/* Drag-to-pan styles */
 .map-container {
     flex: 1;
-    overflow: auto;
-    position: relative;  /* Important: becomes anchor for absolute-positioned nodes */
+    overflow: hidden;  /* CHANGE from 'auto' to 'hidden' - removes scrollbars */
+    position: relative;
     min-height: 0;
     background: #050510;
+    cursor: grab;
 }
 
-/* SKILL TREE GRID */
+.map-container.dragging {
+    cursor: grabbing;
+}
+
 .skill-tree {
     position: relative;
     width: 2000px;
     height: 2000px;
     margin: 0;
     padding: 0;
+    user-select: none;  /* Prevents text selection while dragging */
 }
 
 /* Node Styles */

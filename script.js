@@ -31,6 +31,53 @@ const questionsContainer = document.getElementById("questionsContainer");
 const submitExerciseBtn = document.getElementById("submitExerciseBtn");
 const exerciseFeedback = document.getElementById("exerciseFeedback");
 
+// ========== DRAG TO PAN ==========
+const mapContainer = document.querySelector('.map-container');
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
+let scrollLeft = 0;
+let scrollTop = 0;
+
+if (mapContainer) {
+    // Mouse down: start dragging
+    mapContainer.addEventListener('mousedown', (e) => {
+        // Don't start drag if clicking on a node (nodes have their own click handlers)
+        if (e.target.closest('.node')) return;
+        
+        isDragging = true;
+        mapContainer.classList.add('dragging');
+        dragStartX = e.pageX - mapContainer.offsetLeft;
+        dragStartY = e.pageY - mapContainer.offsetTop;
+        scrollLeft = mapContainer.scrollLeft;
+        scrollTop = mapContainer.scrollTop;
+    });
+    
+    // Mouse up: stop dragging
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        mapContainer.classList.remove('dragging');
+    });
+    
+    // Mouse move: pan while dragging
+    mapContainer.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        
+        const x = e.pageX - mapContainer.offsetLeft;
+        const y = e.pageY - mapContainer.offsetTop;
+        const walkX = (x - dragStartX) * 1;  // Sensitivity (1 = normal)
+        const walkY = (y - dragStartY) * 1;
+        
+        mapContainer.scrollLeft = scrollLeft - walkX;
+        mapContainer.scrollTop = scrollTop - walkY;
+    });
+    
+    // Prevent default drag behavior on images (optional)
+    mapContainer.addEventListener('dragstart', (e) => {
+        e.preventDefault();
+    });
+}
 
 // ========== HELPER FUNCTIONS ==========
 function saveProgress() {
@@ -41,6 +88,20 @@ function isNodeUnlocked(nodeId, nodeData) {
     if (progress.completedNodes.includes(nodeId)) return true;
     if (!nodeData.prerequisites || nodeData.prerequisites.length === 0) return true;
     return nodeData.prerequisites.every(reqId => progress.completedNodes.includes(reqId));
+}
+
+// Center the map view on a specific coordinate
+function centerMapOn(x, y) {
+    const mapContainer = document.querySelector('.map-container');
+    if (!mapContainer) return;
+    
+    // Get viewport dimensions
+    const containerWidth = mapContainer.clientWidth;
+    const containerHeight = mapContainer.clientHeight;
+    
+    // Calculate scroll position to center the point
+    mapContainer.scrollLeft = x - (containerWidth / 2);
+    mapContainer.scrollTop = y - (containerHeight / 2);
 }
 
 function renderSkillTree() {
@@ -89,6 +150,7 @@ function renderSkillTree() {
         nodeDiv.onclick = () => openNodeModal(nodeId, nodeData, isUnlocked);
         skillTreeGrid.appendChild(nodeDiv);
     }
+    centerMapOn(1000, 1000);
 }
 
 function openNodeModal(nodeId, nodeData, isUnlocked) {
