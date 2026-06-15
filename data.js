@@ -39,7 +39,7 @@ const gameData = {
                     prerequisites: [],
                     xpReward: 10,
                     isBoss: false,
-                    position: { x: 500, y: 500 }  // Grid coordinates (0,0 = center)
+                    position: { x: 900, y: 900 }  // Grid coordinates (0,0 = center)
                 },
                 "past_simple": {
                     title: "Past Simple Tense",
@@ -53,6 +53,22 @@ const gameData = {
                         }
                     ],
                     prerequisites: ["start"],
+                    xpReward: 10,
+                    isBoss: true,
+                    position: { x: 900, y: 1000 }
+                },
+                "past_continuous": {
+                    title: "Past Continuous Tense",
+                    explanation: "The past continuous is used for actions that happened during a period in the past",
+                    exercises: [
+                        {
+                            question: "What is the past simple of 'walk'?",
+                            type: "multiple-choice",
+                            options: ["Walked", "Walk", "Walking", "Walks"],
+                            correct: "Walked"
+                        }
+                    ],
+                    prerequisites: ["past_simple"],
                     xpReward: 10,
                     isBoss: true,
                     position: { x: 1000, y: 1000 }

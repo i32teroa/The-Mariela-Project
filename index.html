@@ -22,19 +22,17 @@
                 <button class="map-btn" data-map="C1" disabled>C1 🔒</button>
                 <button class="map-btn" data-map="C2" disabled>C2 🔒</button>
                 <button class="search-btn" id="searchBtn">🔍</button>
+                            <label class="toggle-label">
+                <input type="checkbox" id="showHiddenToggle"> 🔓 Show locked
+            </label>
             </div>
             
             <!-- Right spacer (pushes map group to center, toggle to far right) -->
             <div class="spacer"></div>
-            
-            <!-- Toggle on far right -->
-            <label class="toggle-label">
-                <input type="checkbox" id="showHiddenToggle"> 🔓 Show locked
-            </label>
         </div>
 
-        <!-- The skill tree grid (populated by JavaScript) -->
         <div class="map-container">
+            <svg id="lineCanvas" class="line-canvas" style="position: absolute; top: 0; left: 0; width: 2000px; height: 2000px; pointer-events: none;" viewBox="0 0 2000 2000"></svg>
             <div id="skillTreeGrid" class="skill-tree"></div>
         </div>
 

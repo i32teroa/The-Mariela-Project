@@ -104,6 +104,76 @@ function centerMapOn(x, y) {
     mapContainer.scrollTop = y - (containerHeight / 2);
 }
 
+// ========== LINE DRAWING ==========
+function drawAllLines() {
+    const svg = document.getElementById('lineCanvas');
+    if (!svg) return;
+    // Get current node size from CSS variable
+    const nodeSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--node-size'));
+    const offset = isNaN(nodeSize) ? 7 : nodeSize / 7;  // Fallback to 32px if not found
+    svg.innerHTML = '';  // Clear existing lines
+    
+    const mapData = gameData.maps[currentMap];
+    if (!mapData) return;
+    
+    // Get all nodes and their positions
+    const nodes = mapData.nodes;
+    
+    // Loop through each node to find its prerequisites
+    for (const [nodeId, nodeData] of Object.entries(nodes)) {
+        if (!nodeData.prerequisites || nodeData.prerequisites.length === 0) continue;
+        
+        // Get this node's position
+        const targetPos = nodeData.position;
+        if (!targetPos) continue;
+        
+        // For each prerequisite, draw a line from prerequisite to this node
+        for (const prereqId of nodeData.prerequisites) {
+            const prereqData = nodes[prereqId];
+            if (!prereqData || !prereqData.position) continue;
+            
+            const startPos = prereqData.position;
+            
+            // Determine line style based on completion and visibility
+            const isPrereqCompleted = progress.completedNodes.includes(prereqId);
+            const isTargetCompleted = progress.completedNodes.includes(nodeId);
+            const isHiddenMode = showHidden;
+            
+            let lineColor = '#4a4a6e';  // Default gray
+            let lineOpacity = 0.4;
+            let lineWidth = 2;
+            
+            if (isPrereqCompleted) {
+                // Completed path: bright and visible
+                lineColor = '#70ed76ff';
+                lineOpacity = 0.9;
+                lineWidth = 6;
+            } else if (isHiddenMode) {
+                // Hidden mode but not completed: gray and faint
+                lineColor = '#4a4a6e';
+                lineOpacity = 0.3;
+                lineWidth = 3.5;
+            } else {
+                // Not completed and not showing hidden: don't draw at all
+                continue;
+            }
+            
+            // Create the SVG line
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", startPos.x + offset);
+            line.setAttribute("y1", startPos.y + offset);
+            line.setAttribute("x2", targetPos.x + offset);
+            line.setAttribute("y2", targetPos.y + offset);
+            line.setAttribute("stroke", lineColor);
+            line.setAttribute("stroke-width", lineWidth);
+            line.setAttribute("opacity", lineOpacity);
+            line.setAttribute("stroke-linecap", "round");
+            
+            svg.appendChild(line);
+        }
+    }
+}
+
 function renderSkillTree() {
     const mapData = gameData.maps[currentMap];
     if (!mapData) return;
@@ -151,6 +221,7 @@ function renderSkillTree() {
         skillTreeGrid.appendChild(nodeDiv);
     }
     centerMapOn(1000, 1000);
+    drawAllLines();
 }
 
 function openNodeModal(nodeId, nodeData, isUnlocked) {
@@ -164,7 +235,12 @@ function openNodeModal(nodeId, nodeData, isUnlocked) {
     } else {
         modalPlayBtn.classList.add("hidden");
         modalPrereq.classList.remove("hidden");
-        modalPrereq.innerText = `🔒 Requires: ${nodeData.prerequisites.join(", ")}`;
+        const mapData = gameData.maps[currentMap];
+        const prereqTitles = nodeData.prerequisites.map(prereqId => {
+            const prereqNode = mapData.nodes[prereqId];
+            return prereqNode ? prereqNode.title : prereqId;
+        });
+        modalPrereq.innerText = `🔒 Requires: ${prereqTitles.join(", ")}`;
     }
     
     nodeModal.classList.remove("hidden");
@@ -261,6 +337,7 @@ function submitExercise() {
         
         saveProgress();
         renderSkillTree();
+        drawAllLines();
         exerciseFeedback.innerHTML = `<p style="color: #88ffaa;">✅ PASSED! +${nodeData.xpReward} XP</p>`;
         
         // Auto-close exercise screen after 2 seconds
@@ -294,9 +371,13 @@ function submitExercise() {
 }
 
 // ========== EVENT LISTENERS ==========
+// On page load, sync showHidden with the checkbox's actual state
+showHidden = showHiddenToggle.checked;
+
 showHiddenToggle.addEventListener("change", (e) => {
     showHidden = e.target.checked;
     renderSkillTree();
+    drawAllLines();
 });
 
 modalPlayBtn.addEventListener("click", startExercise);
@@ -328,9 +409,11 @@ document.querySelectorAll(".map-btn").forEach(btn => {
             progress.currentMap = mapId;
             saveProgress();
             renderSkillTree();
+            drawAllLines();
         }
     });
 });
 
 // ========== INITIAL RENDER ==========
 renderSkillTree();
+drawAllLines();

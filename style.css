@@ -6,13 +6,13 @@
 
 /* Node size variable*/
 :root {
-    --node-size: 64px;      /* Base node size. Try 80px or 120px */
-    --node-emoji-size: calc(var(--node-size) * 0.45);  /* Emoji size relative to node */
+    --node-size: 64px;
+    --node-emoji-size: calc(var(--node-size) * 0.45);
 }
 
 html, body {
     height: 100%;
-    overflow: hidden;  /* Prevents double scrollbars */
+    overflow: hidden;
 }
 
 body {
@@ -33,7 +33,7 @@ body {
 .top-bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;  /* Distributes space between items */
+    justify-content: space-between;  
     padding: 12px 20px;
     background: #0a0a1a;
     border-bottom: 1px solid #2a2a4e;
@@ -43,7 +43,7 @@ body {
 }
 
 .spacer {
-    flex: 1;  /* Takes up equal space on left and right */
+    flex: 1;
 }
 
 .map-buttons-group {
@@ -81,7 +81,7 @@ body {
 /* Drag-to-pan styles */
 .map-container {
     flex: 1;
-    overflow: hidden;  /* CHANGE from 'auto' to 'hidden' - removes scrollbars */
+    overflow: hidden;  
     position: relative;
     min-height: 0;
     background: #050510;
@@ -98,13 +98,21 @@ body {
     height: 2000px;
     margin: 0;
     padding: 0;
-    user-select: none;  /* Prevents text selection while dragging */
+    user-select: none;  
+    border: 10px dashed #2f2f41; 
+}
+
+.line-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
 }
 
 /* Node Styles */
 .node {
-    position: absolute;  /* Change from relative to absolute */
-    transform: translate(-50%, -50%);  /* Centers node on its coordinates */
+    position: absolute;  
+    transform: translate(-50%, -50%);
     background: transparent;
     border: none;
     padding: 0;
@@ -115,7 +123,7 @@ body {
 }
 
 .node:hover {
-    transform: translate(-50%, -50%) scale(1.05);  /* Both together */
+    transform: translate(-50%, -50%) scale(1.05);
 }
 
 .node-icon-img {
@@ -136,12 +144,21 @@ body {
 }
 
 .node.completed .node-icon-img {
-    filter: brightness(1.2) drop-shadow(0 0 8px #88ffaa);
+    filter: brightness(1.2) drop-shadow(0 0 8px #f7ff60);
+}
+
+/* New */
+.node.locked .node-icon-img {
+    filter: grayscale(0.7) brightness(0.5);
+}
+
+.node.locked .node-emoji {
+    filter: grayscale(0.7) brightness(0.5);
 }
 
 .node.locked {
-    filter: grayscale(0.8);
-    opacity: 0.6;
+    /* No opacity - background stays solid */
+    filter: none;
 }
 
 /* Map Buttons */
