@@ -31,6 +31,7 @@ const questionsContainer = document.getElementById("questionsContainer");
 const submitExerciseBtn = document.getElementById("submitExerciseBtn");
 const exerciseFeedback = document.getElementById("exerciseFeedback");
 
+
 // ========== HELPER FUNCTIONS ==========
 function saveProgress() {
     localStorage.setItem("mariela_progress", JSON.stringify(progress));
@@ -61,11 +62,15 @@ function renderSkillTree() {
         if (isCompleted) nodeDiv.classList.add("completed");
         if (!isUnlocked && !isCompleted) nodeDiv.classList.add("locked");
         
+        // Determine which image to use
+        let imageFile = "Advancement-plain-raw.webp";  // default raw
+        if (isCompleted) {
+            imageFile = "Advancement-plain-worn.png";   // worn version when completed
+        }
+
         nodeDiv.innerHTML = `
-            <span class="node-icon">${nodeData.isBoss ? "👑" : "📘"}</span>
-            <span class="node-title">${nodeData.title}</span>
-            ${nodeData.isBoss ? "<small>BOSS</small>" : ""}
-            ${isCompleted ? "<span>✓</span>" : ""}
+            <img class="node-icon-img" src="assets/images/nodes/${imageFile}" alt="${nodeData.title}">
+            <div class="node-emoji">${nodeData.isBoss ? "👑" : "📘"}</div>
         `;
         
         nodeDiv.onclick = () => openNodeModal(nodeId, nodeData, isUnlocked);

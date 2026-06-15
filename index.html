@@ -10,19 +10,26 @@
     <div class="app-container">
         <!-- Top bar with CEFR buttons -->
         <div class="top-bar">
-            <button class="map-btn" data-map="A1" disabled>A1 🔒</button>
-            <button class="map-btn" data-map="A2" disabled>A2 🔒</button>
-            <button class="map-btn active" data-map="B1">B1</button>
-            <button class="map-btn" data-map="B2" disabled>B2 🔒</button>
-            <button class="map-btn" data-map="C1" disabled>C1 🔒</button>
-            <button class="map-btn" data-map="C2" disabled>C2 🔒</button>
-            <button class="search-btn" id="searchBtn">🔍</button>
-        </div>
-
-        <!-- Toggle for hidden nodes -->
-        <div class="settings-bar">
-            <label>
-                <input type="checkbox" id="showHiddenToggle"> Show locked nodes
+            <!-- Left spacer (pushes map group to center) -->
+            <div class="spacer"></div>
+            
+            <!-- Map buttons group (centered) -->
+            <div class="map-buttons-group">
+                <button class="map-btn" data-map="A1" disabled>A1 🔒</button>
+                <button class="map-btn" data-map="A2" disabled>A2 🔒</button>
+                <button class="map-btn active" data-map="B1">B1</button>
+                <button class="map-btn" data-map="B2" disabled>B2 🔒</button>
+                <button class="map-btn" data-map="C1" disabled>C1 🔒</button>
+                <button class="map-btn" data-map="C2" disabled>C2 🔒</button>
+                <button class="search-btn" id="searchBtn">🔍</button>
+            </div>
+            
+            <!-- Right spacer (pushes map group to center, toggle to far right) -->
+            <div class="spacer"></div>
+            
+            <!-- Toggle on far right -->
+            <label class="toggle-label">
+                <input type="checkbox" id="showHiddenToggle"> 🔓 Show locked
             </label>
         </div>
 

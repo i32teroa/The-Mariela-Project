@@ -4,6 +4,17 @@
     box-sizing: border-box;
 }
 
+/* Node size variable*/
+:root {
+    --node-size: 64px;      /* Base node size. Try 80px or 120px */
+    --node-emoji-size: calc(var(--node-size) * 0.45);  /* Emoji size relative to node */
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;  /* Prevents double scrollbars */
+}
+
 body {
     background: #0a0a1a;
     font-family: 'Courier New', monospace;
@@ -11,20 +22,124 @@ body {
 }
 
 .app-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
+    height: 100vh;           /* Full viewport height */
+    width: 100vw;            /* Full viewport width */
+    display: flex;
+    flex-direction: column;
+    background: #0a0a1a;
 }
 
-/* Top Bar */
+/* Top Bar - Fixed height, stays at top */
 .top-bar {
     display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 20px;
+    align-items: center;
+    justify-content: space-between;  /* Distributes space between items */
+    padding: 12px 20px;
+    background: #0a0a1a;
+    border-bottom: 1px solid #2a2a4e;
+    flex-shrink: 0;
     flex-wrap: wrap;
+    gap: 10px;
 }
 
+.spacer {
+    flex: 1;  /* Takes up equal space on left and right */
+}
+
+.map-buttons-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #1a1a2e;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #4a4a6e;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+    flex-shrink: 0;  /* Prevents toggle from shrinking */
+}
+
+.toggle-label:hover {
+    border-color: #aaffdd;
+    background: #2a2a4e;
+}
+
+.toggle-label input {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+
+/* MAP CONTAINER - This now takes ALL remaining height */
+.map-container {
+    flex: 1;                /* Takes all remaining space */
+    overflow: auto;         /* Enables scrolling */
+    position: relative;
+    min-height: 0;          /* Critical for flex children to scroll */
+}
+
+/* SKILL TREE GRID */
+.skill-tree {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--node-size), calc(var(--node-size) * 1.2)));
+    gap: calc(var(--node-size) * 0.3);
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    min-width: min-content;
+}
+
+/* Node Styles */
+.node {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s;
+    width: var(--node-size);
+    height: var(--node-size);
+    position: relative;
+}
+
+.node:hover {
+    transform: scale(1.05);
+}
+
+.node-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.node-emoji {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: var(--node-emoji-size);
+    pointer-events: none;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.node.completed .node-icon-img {
+    filter: brightness(1.2) drop-shadow(0 0 8px #88ffaa);
+}
+
+.node.locked {
+    filter: grayscale(0.8);
+    opacity: 0.6;
+}
+
+/* Map Buttons */
 .map-btn {
     background: #1a1a2e;
     border: 2px solid #4a4a6e;
@@ -47,58 +162,25 @@ body {
     cursor: not-allowed;
 }
 
-/* Settings Bar */
-.settings-bar {
-    text-align: right;
-    margin-bottom: 20px;
-}
-
-/* Skill Tree Grid */
-.skill-tree {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 120px));
-    gap: 20px;
-    justify-content: center;
-    background: #050510;
-    padding: 40px;
-    border-radius: 24px;
-    min-height: 500px;
-}
-
-.node {
+.search-btn {
     background: #1a1a2e;
     border: 2px solid #4a4a6e;
-    border-radius: 16px;
-    padding: 20px 10px;
-    text-align: center;
+    color: #e0e0e0;
+    padding: 10px 20px;
+    border-radius: 8px;
     cursor: pointer;
+    font-size: 18px;
     transition: 0.2s;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
 }
 
-.node:hover {
+.search-btn:hover {
     border-color: #aaffdd;
-    transform: translateY(-2px);
+    background: #2a2a4e;
 }
-
-.node.completed {
-    border-color: #88ffaa;
-    background: #1a3a2a;
-}
-
-.node.locked {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.node.locked:hover {
-    transform: none;
-}
-
-/* Modal */
+/* Modal Styles */
 .modal {
     position: fixed;
     top: 0;
@@ -192,4 +274,15 @@ body {
     margin-top: 20px;
     padding: 15px;
     border-radius: 8px;
+}
+
+.start-exercise-btn {
+    background: #2a6e4a;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 20px 0;
 }

@@ -54,7 +54,7 @@ const gameData = {
                     ],
                     prerequisites: ["start"],
                     xpReward: 10,
-                    isBoss: false,
+                    isBoss: true,
                     position: { x: 1, y: 0 }
                 }
                 // Add all your real B1 nodes here
