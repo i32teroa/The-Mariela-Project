@@ -64,8 +64,16 @@ function renderSkillTree() {
         
         // Determine which image to use
         let imageFile = "Advancement-plain-raw.webp";  // default raw
+        if (nodeData.isBoss){
+            imageFile = "Advancement-fancy-raw.webp"
+        }
         if (isCompleted) {
-            imageFile = "Advancement-plain-worn.png";   // worn version when completed
+            if (nodeData.isBoss){
+                imageFile = "Advancement-fancy-worn.png"
+            }
+            else{
+                imageFile = "Advancement-plain-worn.png";   // worn version when completed
+            }
         }
 
         nodeDiv.innerHTML = `
