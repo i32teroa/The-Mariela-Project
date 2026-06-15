@@ -39,7 +39,7 @@ const gameData = {
                     prerequisites: [],
                     xpReward: 10,
                     isBoss: false,
-                    position: { x: 0, y: 0 }  // Grid coordinates (0,0 = center)
+                    position: { x: 500, y: 500 }  // Grid coordinates (0,0 = center)
                 },
                 "past_simple": {
                     title: "Past Simple Tense",
@@ -55,7 +55,7 @@ const gameData = {
                     prerequisites: ["start"],
                     xpReward: 10,
                     isBoss: true,
-                    position: { x: 1, y: 0 }
+                    position: { x: 1000, y: 1000 }
                 }
                 // Add all your real B1 nodes here
             }

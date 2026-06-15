@@ -61,6 +61,11 @@ function renderSkillTree() {
         nodeDiv.className = "node";
         if (isCompleted) nodeDiv.classList.add("completed");
         if (!isUnlocked && !isCompleted) nodeDiv.classList.add("locked");
+
+        if (nodeData.position) {
+            nodeDiv.style.left = nodeData.position.x + "px";
+            nodeDiv.style.top = nodeData.position.y + "px";
+        }
         
         // Determine which image to use
         let imageFile = "Advancement-plain-raw.webp";  // default raw

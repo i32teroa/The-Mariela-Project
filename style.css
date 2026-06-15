@@ -78,27 +78,28 @@ body {
     height: 16px;
 }
 
-/* MAP CONTAINER - This now takes ALL remaining height */
+/* MAP CONTAINER */
 .map-container {
-    flex: 1;                /* Takes all remaining space */
-    overflow: auto;         /* Enables scrolling */
-    position: relative;
-    min-height: 0;          /* Critical for flex children to scroll */
+    flex: 1;
+    overflow: auto;
+    position: relative;  /* Important: becomes anchor for absolute-positioned nodes */
+    min-height: 0;
+    background: #050510;
 }
 
 /* SKILL TREE GRID */
 .skill-tree {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--node-size), calc(var(--node-size) * 1.2)));
-    gap: calc(var(--node-size) * 0.3);
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-    min-width: min-content;
+    position: relative;
+    width: 2000px;
+    height: 2000px;
+    margin: 0;
+    padding: 0;
 }
 
 /* Node Styles */
 .node {
+    position: absolute;  /* Change from relative to absolute */
+    transform: translate(-50%, -50%);  /* Centers node on its coordinates */
     background: transparent;
     border: none;
     padding: 0;
@@ -106,11 +107,10 @@ body {
     transition: transform 0.2s;
     width: var(--node-size);
     height: var(--node-size);
-    position: relative;
 }
 
 .node:hover {
-    transform: scale(1.05);
+    transform: translate(-50%, -50%) scale(1.05);  /* Both together */
 }
 
 .node-icon-img {
