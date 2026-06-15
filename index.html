@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>The Mariela Project</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top bar with CEFR buttons -->
+        <div class="top-bar">
+            <button class="map-btn" data-map="A1" disabled>A1 🔒</button>
+            <button class="map-btn" data-map="A2" disabled>A2 🔒</button>
+            <button class="map-btn active" data-map="B1">B1</button>
+            <button class="map-btn" data-map="B2" disabled>B2 🔒</button>
+            <button class="map-btn" data-map="C1" disabled>C1 🔒</button>
+            <button class="map-btn" data-map="C2" disabled>C2 🔒</button>
+            <button class="search-btn" id="searchBtn">🔍</button>
+        </div>
 
+        <!-- Toggle for hidden nodes -->
+        <div class="settings-bar">
+            <label>
+                <input type="checkbox" id="showHiddenToggle"> Show locked nodes
+            </label>
+        </div>
+
+        <!-- The skill tree grid (populated by JavaScript) -->
+        <div class="map-container">
+            <div id="skillTreeGrid" class="skill-tree"></div>
+        </div>
+
+        <!-- Node detail modal (hidden until a node is clicked) -->
+        <div id="nodeModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="modalTitle">Node Title</h2>
+                <div id="modalExplanation">Explanation goes here...</div>
+                <button id="modalPlayBtn" class="play-btn">Start Exercises</button>
+                <div id="modalPrereq" class="prereq-warning"></div>
+            </div>
+        </div>
+
+        <!-- Exercise screen (hidden until play clicked) -->
+        <div id="exerciseScreen" class="exercise-screen hidden">
+            <div class="exercise-header">
+                <button id="backToNodeBtn">← Back to map</button>
+                <h2 id="exerciseTitle">Exercises</h2>
+            </div>
+            <div id="exerciseExplanation" class="exercise-explanation"></div>
+            <button id="startExerciseBtn" class="start-exercise-btn">Start Exercise</button>
+            <div id="questionsContainer" class="questions-container hidden"></div>
+            <button id="submitExerciseBtn" class="submit-btn hidden">Submit Answers</button>
+            <div id="exerciseFeedback" class="feedback"></div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
