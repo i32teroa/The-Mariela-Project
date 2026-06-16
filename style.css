@@ -84,9 +84,6 @@ body {
     overflow: hidden;  
     position: relative;
     min-height: 0;
-    background-image: url("assets/images/backgrounds/bg2.gif");
-    background-repeat: repeat;
-    background-size: auto;  /* or contain, or auto — see below */
     cursor: grab;
 }
 
@@ -101,7 +98,10 @@ body {
     margin: 0;
     padding: 0;
     user-select: none;  
-    border: 10px dashed #2f2f41; 
+    border: 10px dashed #2f2f41;
+    background-image: url("assets/images/backgrounds/bg.webp");
+    background-repeat: repeat;
+    background-size: auto;
 }
 
 .line-canvas {
@@ -109,6 +109,8 @@ body {
     top: 0;
     left: 0;
     pointer-events: none;
+    z-index: 1;
+    /*filter: brightness(1.2) drop-shadow(0 0 4px #98ff9d);*/
 }
 
 /* Node Styles */
@@ -122,6 +124,7 @@ body {
     transition: transform 0.2s;
     width: var(--node-size);
     height: var(--node-size);
+    z-index: 2;
 }
 
 .node:hover {
