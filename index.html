@@ -42,7 +42,7 @@
                 <span class="close-btn">&times;</span>
                 <h2 id="modalTitle">Node Title</h2>
                 <div id="modalExplanation">Explanation goes here...</div>
-                <button id="modalPlayBtn" class="play-btn">Start Exercises</button>
+                <button id="modalPlayBtn" class="play-btn">Start Level</button>
                 <div id="modalPrereq" class="prereq-warning"></div>
             </div>
         </div>
@@ -58,6 +58,36 @@
             <div id="questionsContainer" class="questions-container hidden"></div>
             <button id="submitExerciseBtn" class="submit-btn hidden">Submit Answers</button>
             <div id="exerciseFeedback" class="feedback"></div>
+        </div>
+        <!-- Explanation Book (pop-up book style) -->
+        <div id="bookScreen" class="book-screen hidden">
+            <div class="book-container">
+                <!-- Close button -->
+                <button class="book-close-btn" id="bookCloseBtn">✕</button>
+                
+                <!-- Book content wrapper -->
+                <div class="book-content">
+                    <div class="book-page" id="bookPageLeft">
+                        <h3 id="bookTitleLeft">Title</h3>
+                        <div id="bookTextLeft" class="book-text"></div>
+                    </div>
+                    <div class="book-divider"></div>
+                    <div class="book-page" id="bookPageRight">
+                        <h3 id="bookTitleRight">Title</h3>
+                        <div id="bookTextRight" class="book-text"></div>
+                    </div>
+                </div>
+                
+                <!-- Navigation footer -->
+                <div class="book-footer">
+                    <button class="book-nav-btn" id="bookPrevBtn">◀ Previous</button>
+                    <span class="book-page-indicator" id="bookPageIndicator">Page 1 / 3</span>
+                    <button class="book-nav-btn" id="bookNextBtn">Next ▶</button>
+                </div>
+                
+                <!-- Start Exercise button (hidden until last page) -->
+                <button class="book-start-btn hidden" id="bookStartBtn">▶ Start Exercises</button>
+            </div>
         </div>
     </div>
 

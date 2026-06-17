@@ -11,7 +11,8 @@ const gameData = {
                 // Node ID: { title, explanation, exercises, prerequisites, xpReward, isBoss, position }
                 "start": {
                     title: "Welcome to B1!",
-                    explanation: "This is the first node. You'll learn how the game works.",
+                    explanation: "This is just a test node.",
+                    bookContent: "Page 1 text.\n\nPage 2 text.\n\nPage 3 text.",
                     exercises: [
                         {
                             question: "What is the past tense of 'go'?",

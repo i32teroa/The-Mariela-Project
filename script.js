@@ -104,6 +104,104 @@ function centerMapOn(x, y) {
     mapContainer.scrollTop = y - (containerHeight / 2);
 }
 
+// ========== BOOK / EXPLANATION LOGIC ==========
+let bookPages = [];
+let currentBookPage = 0;
+let currentNodeIdForBook = null;
+
+function openBook(nodeId) {
+    const nodeData = gameData.maps[currentMap].nodes[nodeId];
+    if (!nodeData) return;
+    
+    currentNodeIdForBook = nodeId;
+    
+    // Split explanation into pages (by double newline or sentence)
+    // You can customize this later — for now, split by \n\n
+    const rawText = nodeData.bookContent || nodeData.explanation || "No explanation available.";
+    const splitPages = rawText.split(/\n\n/).filter(p => p.trim().length > 0);
+    
+    // If only one page, duplicate it so both sides show something
+    if (splitPages.length === 1) {
+        bookPages = [splitPages[0], splitPages[0]];
+    } else {
+        bookPages = splitPages;
+    }
+    
+    currentBookPage = 0;
+    renderBookPage();
+    
+    // Show book, hide modal
+    document.getElementById('nodeModal').classList.add('hidden');
+    document.getElementById('bookScreen').classList.remove('hidden');
+}
+
+function renderBookPage() {
+    const total = bookPages.length;
+    const leftIdx = currentBookPage;
+    const rightIdx = currentBookPage + 1;
+    
+    const leftText = bookPages[leftIdx] || "—";
+    const rightText = bookPages[rightIdx] || "—";
+    
+    document.getElementById('bookTextLeft').innerHTML = formatBookText(leftText);
+    document.getElementById('bookTextRight').innerHTML = formatBookText(rightText);
+    
+    // Update indicator
+    document.getElementById('bookPageIndicator').textContent = `Page ${currentBookPage + 1} / ${total}`;
+    
+    // Navigation buttons
+    document.getElementById('bookPrevBtn').disabled = (currentBookPage === 0);
+    document.getElementById('bookNextBtn').disabled = (currentBookPage >= total - 2);
+    
+    // Show Start button only on the last page spread
+    const isLastPage = (currentBookPage >= total - 2);
+    const startBtn = document.getElementById('bookStartBtn');
+    if (isLastPage) {
+        startBtn.classList.remove('hidden');
+    } else {
+        startBtn.classList.add('hidden');
+    }
+}
+
+function formatBookText(text) {
+    // Convert simple markdown: **bold**, *italic*, bullet points
+    let html = text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/^\- (.*)$/gm, '• $1<br>')
+        .replace(/\n/g, '<br>');
+    return html;
+}
+
+function closeBook() {
+    document.getElementById('bookScreen').classList.add('hidden');
+    currentNodeIdForBook = null;
+    currentBookPage = 0;
+}
+
+function goToNextPage() {
+    if (currentBookPage < bookPages.length - 2) {
+        currentBookPage++;
+        renderBookPage();
+    }
+}
+
+function goToPrevPage() {
+    if (currentBookPage > 0) {
+        currentBookPage--;
+        renderBookPage();
+    }
+}
+
+function startExercisesFromBook() {
+    if (!currentNodeIdForBook) return;
+    
+    const nodeIdToUse = currentNodeIdForBook;  
+    closeBook();                               
+    currentNodeId = nodeIdToUse;               
+    startExercise();
+}
+
 // ========== LINE DRAWING ==========
 function drawAllLines() {
     const svg = document.getElementById('lineCanvas');
@@ -228,6 +326,13 @@ function openNodeModal(nodeId, nodeData, isUnlocked) {
     currentNodeId = nodeId;
     modalTitle.innerText = nodeData.title;
     modalExplanation.innerText = nodeData.explanation;
+    
+    // Set up the Start Level button
+    modalPlayBtn.innerText = "Start Level";
+    modalPlayBtn.onclick = () => {
+        nodeModal.classList.add("hidden");
+        openBook(nodeId);
+    };
     
     if (isUnlocked || progress.completedNodes.includes(nodeId)) {
         modalPlayBtn.classList.remove("hidden");
@@ -380,7 +485,7 @@ showHiddenToggle.addEventListener("change", (e) => {
     drawAllLines();
 });
 
-modalPlayBtn.addEventListener("click", startExercise);
+//modalPlayBtn.addEventListener("click", startExercise);
 backToNodeBtn.addEventListener("click", () => {
     exerciseScreen.classList.add("hidden");
     questionsContainer.innerHTML = "";
@@ -413,6 +518,19 @@ document.querySelectorAll(".map-btn").forEach(btn => {
             centerMapOn(1000, 1000);
         }
     });
+});
+
+// Book event listeners
+document.getElementById('bookCloseBtn').addEventListener('click', closeBook);
+document.getElementById('bookPrevBtn').addEventListener('click', goToPrevPage);
+document.getElementById('bookNextBtn').addEventListener('click', goToNextPage);
+document.getElementById('bookStartBtn').addEventListener('click', startExercisesFromBook);
+
+// Close book by clicking outside (optional)
+document.getElementById('bookScreen').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('bookScreen')) {
+        closeBook();
+    }
 });
 
 // ========== INITIAL RENDER ==========
