@@ -215,12 +215,12 @@ function renderSkillTree() {
         nodeDiv.innerHTML = `
             <img class="node-icon-img" src="assets/images/nodes/${imageFile}" alt="${nodeData.title}">
             <div class="node-emoji">${nodeData.isBoss ? "👑" : "📘"}</div>
+            <div class="node-tooltip">${nodeData.title}</div>
         `;
         
         nodeDiv.onclick = () => openNodeModal(nodeId, nodeData, isUnlocked);
         skillTreeGrid.appendChild(nodeDiv);
     }
-    centerMapOn(1000, 1000);
     drawAllLines();
 }
 
@@ -410,6 +410,7 @@ document.querySelectorAll(".map-btn").forEach(btn => {
             saveProgress();
             renderSkillTree();
             drawAllLines();
+            centerMapOn(1000, 1000);
         }
     });
 });
@@ -417,3 +418,4 @@ document.querySelectorAll(".map-btn").forEach(btn => {
 // ========== INITIAL RENDER ==========
 renderSkillTree();
 drawAllLines();
+centerMapOn(1000, 1000);
